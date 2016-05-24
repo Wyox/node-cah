@@ -1,0 +1,20 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,800,300,300italic,400italic,600,600italic,700italic,800italic);
+
+body{
+	background: #1abc9c;
+}
+
+.card{
+	color:white;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+	height: 220px;
+	padding: 10px 10px;
+	border-radius: 5px;
+	background: black;
+}
+
+.white-card{
+	background: white;
+	color:black;
+}
