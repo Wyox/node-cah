@@ -1,8 +1,9 @@
+var socket = {};
 $(document).ready(function(){
-	var socket = io(location.hostname + ":8080");
+	socket = io(location.hostname + ":8080");
 
 
-
+	SetPlayerName("Ivo test")
 
 	// Handle messages
 	socket.on('game-logic', function(msg){
@@ -15,5 +16,12 @@ $(document).ready(function(){
 		$('#messages').append($('<li>').text(msg));
 	});
 
-	
+
 })
+
+
+
+
+function SetPlayerName(name){
+	socket.emit("SetPlayerName",name);
+}

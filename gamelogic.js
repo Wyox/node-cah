@@ -11,22 +11,27 @@ exports.init = function(io){
 		players = PlayerArray.length;
 
 		var myPlayer = new Player(socket.id);
+		PlayerArray.push(myPlayer);
 
-		myPlayer.setPlayerName("Ivo speelt vals");
-		PlayerArray.push(myPlayer)
-	
 		socket.on('disconnect', function(){
-			console.log("Disconnect");
-			console.log(socket.id);
+			indexOfPlayer = getIndexBySessionId(socket.id);
+			// Remove player from list
+			PlayerArray.splice(indexOfPlayer, 1);
+
 		});
+
+		socket.on('SetPlayerName', function(name){
+			var myPlayer = findPlayerBySessionId(socket.id);			
+			myPlayer.setPlayerName(name);
+		})
 
 	});
 
-
-
-
-
 }
+
+
+
+
 
 
 
@@ -34,6 +39,7 @@ function findPlayerBySessionId(sessionId){
 	var myPlayer = new Player();
 
 	var myIndex = getIndexBySessionId(sessionId);
+
 
 	if(myIndex >= 0){
 		return PlayerArray[myIndex];
