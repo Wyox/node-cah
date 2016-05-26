@@ -1,5 +1,5 @@
 
-
+var socket = io(location.hostname + ":8080");
 
 
 
