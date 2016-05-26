@@ -1,4 +1,7 @@
 var socket = {};
+var GameInfo = {};
+
+
 $(document).ready(function(){
 	socket = io(location.hostname + ":8080");
 
@@ -16,8 +19,22 @@ $(document).ready(function(){
 		$('#messages').append($('<li>').text(msg));
 	});
 
+	socket.on('GameInfoUpdate',function(GameInf){
+		HandleGameInfoUpdate(GameInf);
+	})
+
 
 })
+
+
+
+function HandleGameInfoUpdate(GameInf){
+	GameInfo = GameInf;
+
+	// Handle some stuff that only happens everytime the game info gets updated.
+
+	
+}
 
 
 

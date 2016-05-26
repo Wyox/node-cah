@@ -2,7 +2,6 @@ var Player 	= require('./Player.js');
 
 var io = {};
 var players = 0;
-
 var PlayerArray = [];
 
 exports.init = function(io){
