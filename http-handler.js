@@ -58,7 +58,7 @@ function handleRequest(request, response){
 	// Serve the static file if it exists otherwise normal processing
 	if(fs.existsSync(fileUrl) == true && fs.statSync(fileUrl).isFile() ){
 		var mimeType = mimeTypes[path.extname(fileUrl).split(".")[1]];
-		response.writeHead(200, mimeType);
+		response.writeHead(200, 'OK', {'Content-Type': mimeType});
 
 		// Stream request to the browser
 		var fileStream = fs.createReadStream(fileUrl);

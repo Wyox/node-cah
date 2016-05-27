@@ -21,6 +21,7 @@ $(document).ready(function(){
 
 	socket.on('GameInfoUpdate',function(GameInf){
 		HandleGameInfoUpdate(GameInf);
+		console.log(GameInf);
 	})
 
 

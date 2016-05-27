@@ -26,13 +26,11 @@ exports.init = function(io){
 
 
 		// Custom events
-
 		socket.on('SetPlayerName', function(name){
 			console.log("Game: Player set name to '" + name + "'");
 			var myPlayer = findPlayerBySessionId(socket.id);			
 			// Since we work with pointers, elements in PlayerArray are updated ;)
 			myPlayer.setPlayerName(name);
-
 
 		})
 
