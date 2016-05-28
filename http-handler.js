@@ -22,7 +22,7 @@ exports.init = function(port){
 
 	//Lets start our server
 	server.listen(port, function(){
-		console.log("Webserver now accepting for requests");
+		console.log("Webserver now accepting requests");
 	});
 
 }
