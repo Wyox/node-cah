@@ -1,12 +1,14 @@
 var Player 	= require('./Player.js');
 var GameInfo 	= require('./GameInfo.js');
 
-var io = {};
+var io;
 var players = 0;
 var PlayerArray = [];
 var myGameInfo = new GameInfo(PlayerArray);
 
-exports.init = function(io){
+exports.init = function(ioo){
+
+	io = ioo;
 
 	io.on('connection', function(socket){
 		players = PlayerArray.length;
@@ -21,6 +23,7 @@ exports.init = function(io){
 			indexOfPlayer = getIndexBySessionId(socket.id);
 			// Remove player from list
 			PlayerArray.splice(indexOfPlayer, 1);
+			SyncGameInfo();
 
 		});
 
@@ -31,22 +34,62 @@ exports.init = function(io){
 			var myPlayer = findPlayerBySessionId(socket.id);			
 			// Since we work with pointers, elements in PlayerArray are updated ;)
 			myPlayer.setPlayerName(name);
+			myPlayer.setActivePlayer();
+			SyncGameInfo();
 
 		})
 
+		socket.on('SetReadyState', function(state){
+			console.log("Game: Player set ready-state to '" + state + "'");
+			var myPlayer = findPlayerBySessionId(socket.id);			
+			// Since we work with pointers, elements in PlayerArray are updated ;)
+			myPlayer.setReady(state);
 
 
+			// Do logic once everyone is ready
+			var totalReady = 0;
+			for( pli in myGameInfo.players ){
+				if(myGameInfo.players[pli].ready === true){
+					totalReady = totalReady + 1;	
+				}
+			}
+			if(myGameInfo.players.length >= 3 && totalReady == myGameInfo.players.length){
+
+				// Start game
+				if(myGameInfo.IsWaitingForPlayers() === true){
+					console.log("Game: Change to start game");
+					myGameInfo.SetStartGame();
+				}
+			}else{
+				console.log("Game: Waiting for players ",totalReady,"/",myGameInfo.players.length)
+			}
+
+			SyncGameInfo();
+
+		})		
+
+		//Initial call, sync the current game info to that player
+		SyncGameInfo();
 
 
 	});
 
 }
 
+function SyncGameInfo(){
+	for (i in PlayerArray) {
+		//Tmp put it on you so the current player is distinguised between clients
 
+		myGameInfo.players[i].you = true;
 
-function SyncGameInfo(GameInfo){
-
+		// Send the gameinfo packet
+		io.to(PlayerArray[i].getSessionId()).emit('GameInfoUpdate',myGameInfo.GetObject());
+		//Tmp put it on you so the current player is distinguised between clients
+		myGameInfo.players[i].you = false;
+	}
 }
+
+
 
 
 

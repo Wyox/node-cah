@@ -10,72 +10,99 @@
 </head>
 <body>
 	<div class="templates hidden">
+	
+		<div class="container game-field-template">
+			<div class="row statusbar">
+				<div class="col-md-12 ">
+					Welkom: Gebruikersnaam
+				</div>
+			</div>
+			<div class="row">
+
+				<div class="col-md-2 col-xs-6">
+					<div class="black-card card">
+						<div class="card-text">
+							As part of his contract, Prince won't perform without _______ in his dressing room.
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<div class="white-card card">
+						<div class="card-text">
+						Seduction.
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2 col-xs-6">
+					<div class="white-card card">
+						<div class="card-text">
+							The Amish.
+						</div>
+					</div>
+				</div>			
+				<div class="col-md-2 col-xs-6">
+					<div class="white-card card">
+						<div class="card-text">
+							My vagina.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="container home-screen">
 	</div>
 
 	<div class="container game">
-		<div class="col-md-12">
-			<span class="players">0</span>/<span class="players-max">10</span> Players
-		</div>
-		<div class="col-md-12">
-			<span class="players-ready">0</span>/<span class="total-players">10</span> Players Ready
-		</div>
-
-		<div class="col-md-12">
-			<input type="text" name="nickname" value="" placeholder="Nickname"><input type="button" value="Set" class="button-save-nickname" />
-		</div>
-	</div>
-<!-- 
-
-	<div class="container">
-		<div class="row statusbar">
-			<div class="col-md-12 ">
-				Welkom: Gebruikersnaam
-			</div>
-			<div class="col-md-12">
-				Status: Waiting for players...
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-2 col-xs-6">
-				<div class="black-card card">
-					<div class="card-text">
-						As part of his contract, Prince won't perform without _______ in his dressing room.
-					</div>
+		<div class="col-md-6">
+			<h1>Waiting for players</h1>
+			<div class="loader loader-outer">
+				<div class="loader-icon">
 				</div>
-			</div>
-			<div class="col-md-2 col-xs-6">
-				<div class="white-card card">
-					<div class="card-text">
-					Seduction.
-					</div>
+				<div class="loader-icon">
 				</div>
-			</div>
-			<div class="col-md-2 col-xs-6">
-				<div class="white-card card">
-					<div class="card-text">
-						The Amish.
-					</div>
+				<div class="loader-icon">
+				</div>
+				<div class="loader-icon">
 				</div>
 			</div>			
-			<div class="col-md-2 col-xs-6">
-				<div class="white-card card">
-					<div class="card-text">
-						My vagina.
-					</div>
+		</div>
+
+		<div class="col-md-6">
+			<h1>Status</h1>
+			<strong><span class="players-amount">0</span> Players connected</strong><br/>
+			<strong><span class="players-ready">0</span>/<span class="players-amount">10</span> Players Ready</strong>
+		</div>
+
+		<div class="col-md-6">
+
+			<div class="form-inline">
+				<div class="form-group">
+					<label for="nickname">Nickname</label> <br/>
+					<div class="nickname-error red"></div>
+					<input type="text" class="form-control" name="nickname" value="" placeholder="Nickname">
+					<input type="button" class="btn btn-default button-save-nickname" value="Set" /><br/>
+					Before you can start, please set a nickname
 				</div>
 			</div>
-			<div class="col-md-2 col-xs-6">
-				<div class="white-card card">
-					<div class="card-text">
-					I have a very long text that is very long did you know that the size of the text is very long. Holla holla get dollar Holla holla get dollar Holla holla get dollar Holla holla get dollar Holla holla get dollar
-					</div>
-				</div>
-			</div>	
+			
 		</div>
-	</div> -->
+
+		<div class="col-md-6">
+			Once you selected a nickname you can press the ready button. If there are more than 3 players and everyone is ready the game will start.
+			<div class="form-inline">
+				<div class="form-group">
+					<input type="button" class="btn btn-default button-ready" disabled="disabled" value="Ready">
+				</div>
+			</div>
+			<div class="ready-text">You are <span class="ready-negate red">not</span> ready</div>
+			
+		</div>		
+	</div>
+
+
+<!-- 	 -->
 
 
 	<script src="/js/jquery-2.2.4.min.js"></script>

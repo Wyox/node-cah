@@ -3,7 +3,7 @@ var http 	= require('http');
 var fs 		= require('fs');
 var path 	= require('path');
 var server;
-var port = 8000;
+
 
 var mimeTypes = {
 	"html": "text/html",
@@ -16,13 +16,13 @@ var mimeTypes = {
 
 
 
-exports.init = function(){
+exports.init = function(port){
 	server = http.createServer(handleRequest);
 
 
 	//Lets start our server
 	server.listen(port, function(){
-		console.log("Server listening on: http://localhost:%s", port);
+		console.log("Webserver now accepting for requests");
 	});
 
 }

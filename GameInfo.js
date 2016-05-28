@@ -12,6 +12,60 @@ var GameInfo = function(players){
 
 	this.state = "waiting-for-players";
 
+
+	this.IsStartGame = function(){
+		return (this.state == "start-game");
+	}
+
+	this.IsPlayerPick = function(){
+		return (this.state == "player-pick");
+	}
+
+	this.IsCzarPick = function(){
+		return (this.state == "czar-pick");
+	}
+
+	this.IsRoundEnd = function(){
+		return (this.state == "round-end");
+	}
+
+	this.IsWaitingForPlayers = function(){
+		return (this.state == "waiting-for-players");
+	}
+
+	this.SetStartGame = function(){
+		this.state="start-game";
+	}
+
+	this.SetPlayerPick = function(){
+		this.state="player-pick";
+	}
+
+	this.SetCzarPick = function(){
+		this.state="czar-pick";
+	}
+
+	this.SetRoundEnd = function(){
+		this.state="round-end";
+	}
+
+
+	this.GetObject = function(){
+
+		var myPlayers = [];
+
+		for(pli in this.players){
+			myPlayers.push(this.players[pli].GetObject());
+		}
+
+		// Return an object back with just the info
+		return {
+			players: myPlayers,
+			state: this.state
+		}
+
+	}
+
 }
 
 module.exports = GameInfo;

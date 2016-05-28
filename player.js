@@ -4,9 +4,16 @@ var Player = function(sessionId, playerName, score){
 	this.sessionId = sessionId;
 	this.playerName = playerName;
 	this.score = score;
+	this.you = false;
+	this.ready = false;
 
-	// active-player or card-czar
-	this.type = "active-player";
+
+	// Type can be one of the following
+	// 1. active-player
+	// 2. card-czar
+	// 3. unknown (unknown means this player connected but still needs to enter in a name)
+	this.type = "unknown";
+
 
 
 	// Functions
@@ -23,6 +30,14 @@ var Player = function(sessionId, playerName, score){
 	}
 	this.getSessionId = function(){
 		return this.sessionId;
+	}
+
+	this.setReady = function(state){
+		this.ready = state;
+	}
+
+	this.getReady = function(){
+		return this.ready;
 	}
 
 	this.setCardCzar = function(){
@@ -48,6 +63,20 @@ var Player = function(sessionId, playerName, score){
 			return true;
 		}else{
 			return false;
+		}
+	}
+
+
+	this.GetObject = function(){
+		// Player to object
+		// SessionID is private to this function only
+		return {
+			playerName : this.playerName,
+			score : this.score,
+			you : this.you,
+			type : this.type,
+			ready : this.ready
+
 		}
 	}
 
