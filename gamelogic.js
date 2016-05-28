@@ -1,10 +1,14 @@
 var Player 	= require('./Player.js');
 var GameInfo 	= require('./GameInfo.js');
+var CardSet 	= require('./cardsets/CardSet.js');
+var card 	= require('./cardsets/card.js');
+
 
 var io;
 var players = 0;
 var PlayerArray = [];
 var myGameInfo = new GameInfo(PlayerArray);
+var myCardSet;
 
 exports.init = function(ioo){
 
@@ -80,11 +84,24 @@ function GameStart(){
 	myGameInfo.SetStartGame();
 
 	// Set a card-czar
-	
+	var foundCZar = false
+	var czarIndex = 0;
+	for( pli in myGameInfo.players ){
+		if(myGameInfo.players[pli].isCardCzar() === true){
+			// Never exceed the player count but add one to the index
+			myGameInfo.players[pli].setActivePlayer();
+			czarIndex = (pli + 1) %  myGameInfo.players.length;
+			break;
+		}
+	}
+
+	myGameInfo.players[pli].setCardCzar();
 
 	// Get a random Black card
 
+
 	// Check if everyone has 10 cards.
+
 
 	// Sync information
 

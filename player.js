@@ -6,6 +6,7 @@ var Player = function(sessionId, playerName){
 	this.score = 0;
 	this.you = false;
 	this.ready = false;
+	this.cards = [];
 
 
 	// Type can be one of the following

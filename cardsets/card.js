@@ -3,8 +3,25 @@ var Card = function(id,cardType,text,expansion){
 	this.cardType = cardType;
 	this.text = text;
 	this.expansion = expansion;	
+
+
+	this.getType = function(){
+		return this.type;
+	}
+
+	this.getText = function(){
+		return this.text;
+	}
+
+	this.getExpansion = function(){
+		return this.expansion;
+	}
+
+	this.getId = function(){
+		return this.id;
+	}		
+
+
 };
 
-Card.prototype.getType = function(){
-	return this.type;
-}
+module.exports = Card;
