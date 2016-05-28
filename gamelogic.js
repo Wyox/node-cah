@@ -79,15 +79,18 @@ exports.init = function(ioo){
 function SyncGameInfo(){
 	for (i in PlayerArray) {
 		//Tmp put it on you so the current player is distinguised between clients
-
 		myGameInfo.players[i].you = true;
 
 		// Send the gameinfo packet
 		io.to(PlayerArray[i].getSessionId()).emit('GameInfoUpdate',myGameInfo.GetObject());
+
 		//Tmp put it on you so the current player is distinguised between clients
 		myGameInfo.players[i].you = false;
 	}
+
+	return;
 }
+
 
 
 

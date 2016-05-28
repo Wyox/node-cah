@@ -1,6 +1,7 @@
 var socket = {};
 var GameInfo;
 var PlayerIsReady = false
+var localState;
 
 $(document).ready(function(){
 	socket = io(location.hostname + ":8080");
@@ -58,17 +59,23 @@ function HandleGameInfoUpdate(GameInf){
 
 	// Do different stuff on each event in GameInfo
 
-	switch(GameInfo.state){
-		case "waiting-for-players":
-			// Do nothing
-		break;
-		case "start-game":
-			// Start game
-			
-			console.log("Start game");
-		break;		
+	// Initial call to a new state
+	if(localState != GameInfo.state){
+		switch(GameInfo.state){
+			case "waiting-for-players":
+				// Load waiting for players screen
+				$(".cah-game").html('').append($(".waiting-for-players-template"));
+			break;
+			case "start-game":
+				// Start game
+				$(".cah-game").html('').append($(".game-field-template"));
+				console.log("Start game");
+			break;		
+		}	
 	}
 
+
+	localState = GameInfo.state;
 
 
 }

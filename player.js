@@ -1,9 +1,9 @@
-var Player = function(sessionId, playerName, score){
+var Player = function(sessionId, playerName){
 
 	// Attributes
 	this.sessionId = sessionId;
 	this.playerName = playerName;
-	this.score = score;
+	this.score = 0;
 	this.you = false;
 	this.ready = false;
 
@@ -80,6 +80,14 @@ var Player = function(sessionId, playerName, score){
 		}
 	}
 
+
+	this.addPoint = function(){
+		this.score = this.score + 1;
+	}
+
+	this.getScore = function(){
+		return this.score;
+	}
 
 }
 
