@@ -1,14 +1,17 @@
-var Player 	= require('./Player.js');
-var GameInfo 	= require('./GameInfo.js');
-var CardSet 	= require('./cardsets/CardSet.js');
-var card 	= require('./cardsets/card.js');
-
+var Player = require('./Player.js');
+var GameInfo = require('./GameInfo.js');
+var CardSet = require('./cardsets/CardSet.js');
+var card = require('./cardsets/card.js');
 
 var io;
 var players = 0;
 var PlayerArray = [];
 var myGameInfo = new GameInfo(PlayerArray);
 var myCardSet;
+
+//Trigger the set of the default expansion packs for the game
+CardSet();
+
 
 exports.init = function(ioo){
 
@@ -35,7 +38,7 @@ exports.init = function(ioo){
 		// Custom events
 		socket.on('SetPlayerName', function(name){
 			console.log("Game: Player set name to '" + name + "'");
-			var myPlayer = findPlayerBySessionId(socket.id);			
+			var myPlayer = findPlayerBySessionId(socket.id);
 			// Since we work with pointers, elements in PlayerArray are updated ;)
 			myPlayer.setPlayerName(name);
 			myPlayer.setActivePlayer();
@@ -45,7 +48,7 @@ exports.init = function(ioo){
 
 		socket.on('SetReadyState', function(state){
 			console.log("Game: Player set ready-state to '" + state + "'");
-			var myPlayer = findPlayerBySessionId(socket.id);			
+			var myPlayer = findPlayerBySessionId(socket.id);
 			// Since we work with pointers, elements in PlayerArray are updated ;)
 			myPlayer.setReady(state);
 
@@ -54,7 +57,7 @@ exports.init = function(ioo){
 			var totalReady = 0;
 			for( pli in myGameInfo.players ){
 				if(myGameInfo.players[pli].ready === true){
-					totalReady = totalReady + 1;	
+					totalReady = totalReady + 1;
 				}
 			}
 			if(myGameInfo.players.length >= 3 && totalReady == myGameInfo.players.length){
@@ -69,7 +72,7 @@ exports.init = function(ioo){
 
 			SyncGameInfo();
 
-		})		
+		})
 
 		//Initial call, sync the current game info to that player
 		SyncGameInfo();
@@ -98,10 +101,10 @@ function GameStart(){
 	myGameInfo.players[pli].setCardCzar();
 
 	// Get a random Black card
+	var currentBlackCard = CardSet.drawBlackCard;
 
 
 	// Check if everyone has 10 cards.
-
 
 	// Sync information
 

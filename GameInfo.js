@@ -8,7 +8,7 @@ var GameInfo = function(players){
 		3. player-pick
 		4. czar-pick
 		5. round-end
-	*/ 
+	*/
 
 	this.state = "waiting-for-players";
 
