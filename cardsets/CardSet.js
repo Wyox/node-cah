@@ -58,15 +58,15 @@ function drawBlackCard(){
 	var test = Math.floor(Math.random() * (max - 1 + 1)) + 1;
 
 	//Execute filter
-	var filter = {cardType: "A", id: test};
+	var filter = {cardType: "Q", id: test};
 	var foundResults = sjf.exec(filter,global.obj);
 
 	//Return the card
-	console.log("Returning black card with id "+test+ ". Contents: " + foundResults + ". Amount of black cards left: " + max);
+	console.log("Returning white card with id "+test+ ". Contents: " + foundResults + ". Amount of white cards left: " + max);
 	return Object.keys(foundResults).length;
 }
 
-//Returns a black card for the game
+//Returns a white card for the game
 function drawWhiteCard(){
 	//Define max for choosing random card
 	var max = availableWhiteCards();
