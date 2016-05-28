@@ -33,6 +33,29 @@ body{
 	display:none;
 }
 
+.select-card{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+
+.player-cards.active .white-card{
+	cursor: pointer;
+}
+
+.player-cards.disabled{
+	opacity: 0.25;
+}
+
+
+.player-cards{
+	border-top: black solid 1px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 .loader-outer{
     width: 170px;
     height:15px;

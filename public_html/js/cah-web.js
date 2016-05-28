@@ -67,8 +67,8 @@ function HandleGameInfoUpdate(GameInf){
 	}	
 
 	// Update player count if we can.
-
 	$('.players-amount').html(GameInf.players.length);
+
 	if(localStorage.getItem('nickname') != null){
 		$('.cah-username').html(localStorage.getItem('nickname'));
 	}
@@ -87,6 +87,15 @@ function HandleGameInfoUpdate(GameInf){
 	switch(GameInfo.state){
 		case "start-game":
 			$(".cah-status").html("Preparing round...");
+		break;
+		case "player-pick":
+			if(GetMe().type == "card-czar"){
+				// Card-czar cannot pick a card, there for his cards are disabled for a bit.
+				$(".cah-game .player-cards").addClass("disabled");
+			}else{
+				// Select card
+				$(".cah-game .player-cards").addClass("active");
+			}
 		break;
 	}
 
