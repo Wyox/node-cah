@@ -57,8 +57,7 @@ exports.init = function(ioo){
 
 				// Start game
 				if(myGameInfo.IsWaitingForPlayers() === true){
-					console.log("Game: Change to start game");
-					myGameInfo.SetStartGame();
+					GameStart();
 				}
 			}else{
 				console.log("Game: Waiting for players ",totalReady,"/",myGameInfo.players.length)
@@ -75,6 +74,29 @@ exports.init = function(ioo){
 	});
 
 }
+
+function GameStart(){
+	console.log("Game: Change to start game");
+	myGameInfo.SetStartGame();
+
+	// Set a card-czar
+	
+
+	// Get a random Black card
+
+	// Check if everyone has 10 cards.
+
+	// Sync information
+
+
+	SyncGameInfo();
+}
+
+function GamePlayerPick(){
+
+}
+
+
 
 function SyncGameInfo(){
 	for (i in PlayerArray) {

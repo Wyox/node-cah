@@ -6,6 +6,17 @@ var localState;
 $(document).ready(function(){
 	socket = io(location.hostname + ":8080");
 
+	socket.on('connect',function(){
+		// Set our name
+	});
+
+	socket.on('reconnect',function(arg){
+		if(localStorage.getItem('nickname') != null){
+			// Set this to our current player name
+			SetPlayerName(localStorage.getItem('nickname'));
+		}
+	});
+
 	// Handle messages
 	socket.on('game-logic', function(msg){
 
@@ -28,10 +39,6 @@ $(document).ready(function(){
 		$('input[name="nickname"]').val(localStorage.getItem('nickname'));
 	}
 
-
-	// Bind buttons
-	Binder();
-
 })
 
 
@@ -40,9 +47,31 @@ function HandleGameInfoUpdate(GameInf){
 	var ready = 0;
 	GameInfo = GameInf;
 
+
+	// Initial call to a new state
+	if(localState != GameInfo.state){
+		switch(GameInfo.state){
+			case "waiting-for-players":
+				// Load waiting for players screen
+				$(".cah-game").html('').append($(".waiting-for-players-template"));
+				Binder();
+			break;
+			case "start-game":
+
+				// Start game
+				$(".cah-game").html('').append($(".game-field-template"));
+				Binder();
+				console.log("Start game");
+			break;		
+		}	
+	}	
+
 	// Update player count if we can.
 
 	$('.players-amount').html(GameInf.players.length);
+	if(localStorage.getItem('nickname') != null){
+		$('.cah-username').html(localStorage.getItem('nickname'));
+	}
 
 	
 	// Count ready players
@@ -55,32 +84,34 @@ function HandleGameInfoUpdate(GameInf){
 
 	$(".players-ready").html(ready);
 
+	switch(GameInfo.state){
+		case "start-game":
+			$(".cah-status").html("Preparing round...");
+		break;
+	}
+
 	// Handle some stuff that only happens everytime the game info gets updated.
 
 	// Do different stuff on each event in GameInfo
-
-	// Initial call to a new state
-	if(localState != GameInfo.state){
-		switch(GameInfo.state){
-			case "waiting-for-players":
-				// Load waiting for players screen
-				$(".cah-game").html('').append($(".waiting-for-players-template"));
-			break;
-			case "start-game":
-				// Start game
-				$(".cah-game").html('').append($(".game-field-template"));
-				console.log("Start game");
-			break;		
-		}	
-	}
-
 
 	localState = GameInfo.state;
 
 
 }
 
+function GetMe(){
+	var rc;
+	console.log(GameInfo);
+	for (i in GameInfo.players) {
+		var ply = GameInfo.players[i];
+		if(ply.you === true){
+			rc = ply;
+			break;
+		}
+	}
 
+	return;
+}
 
 
 
