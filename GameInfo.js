@@ -11,6 +11,15 @@ var GameInfo = function(players){
 	*/
 
 	this.state = "waiting-for-players";
+	this.blackcard;
+
+	this.getBlackCard = function(){
+		return this.blackcard;
+	}
+
+	this.setBlackCard = function(blackcard){
+		this.blackcard = blackcard;
+	}
 
 
 	this.IsStartGame = function(){
@@ -61,7 +70,8 @@ var GameInfo = function(players){
 		// Return an object back with just the info
 		return {
 			players: myPlayers,
-			state: this.state
+			state: this.state,
+			blackcard: this.blackcard
 		}
 
 	}

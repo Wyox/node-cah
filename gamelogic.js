@@ -7,10 +7,8 @@ var io;
 var players = 0;
 var PlayerArray = [];
 var myGameInfo = new GameInfo(PlayerArray);
-var myCardSet;
+var myCardSet = new CardSet();
 
-//Trigger the set of the default expansion packs for the game
-CardSet();
 
 
 exports.init = function(ioo){
@@ -74,6 +72,16 @@ exports.init = function(ioo){
 
 		})
 
+		socket.on('SetCard',function(card){
+			// Remove the set card from the players card stack.
+			var currentPlayer = findPlayerBySessionId(socket.id);
+
+			currentPlayer.addSelectedCard(myCardSet.getCardById(card));
+			
+			SyncGameInfo();
+
+		})
+
 		//Initial call, sync the current game info to that player
 		SyncGameInfo();
 
@@ -100,20 +108,30 @@ function GameStart(){
 
 	myGameInfo.players[pli].setCardCzar();
 
-	// Get a random Black card
-	var currentBlackCard = CardSet.drawBlackCard;
+	myGameInfo.setBlackCard(myCardSet.drawBlackCard());
 
+	// Check if everyone has 10 cards and reset selected cards
+	for( pli in myGameInfo.players ){
+		var myPly = myGameInfo.players[pli];
+		myPly.clearSelectedCards();
+		while(myPly.cards.length < 10){
+			myPly.cards.push(myCardSet.drawWhiteCard());
+		}
+	}
 
-	// Check if everyone has 10 cards.
 
 	// Sync information
 
 
 	SyncGameInfo();
+
+	setTimeout(GamePlayerPick, 1000);
+	
 }
 
 function GamePlayerPick(){
-
+	myGameInfo.SetPlayerPick();
+	SyncGameInfo();
 }
 
 

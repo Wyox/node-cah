@@ -7,6 +7,7 @@ var Player = function(sessionId, playerName){
 	this.you = false;
 	this.ready = false;
 	this.cards = [];
+	this.selectedCards = [];
 
 
 	// Type can be one of the following
@@ -24,6 +25,21 @@ var Player = function(sessionId, playerName){
 	}
 	this.getPlayerName = function(){
 		return this.playerName;
+	}
+
+	this.addSelectedCard = function(item){
+		this.selectedCards.push(item);
+	}
+
+	this.setSelectedCards = function(selectedCards){
+		this.selectedCards = selectedCards;
+	}
+	this.getSelectedCards = function(){
+		return this.selectedCards;
+	}
+
+	this.clearSelectedCards = function(){
+		this.selectedCards = [];
 	}
 
 	this.setSessionId = function(sessionId){
@@ -71,13 +87,28 @@ var Player = function(sessionId, playerName){
 	this.GetObject = function(){
 		// Player to object
 		// SessionID is private to this function only
+
+		var myCards = [];
+		var mySelectedCards = []
+
+		for(ci in this.selectedCards){
+			mySelectedCards.push(this.selectedCards[ci].GetObject());
+		}
+
+		for(ci in this.cards){
+			myCards.push(this.cards[ci].GetObject());
+		}
+
+		// Maybe cards should be put private if they are not yours
+
 		return {
 			playerName : this.playerName,
 			score : this.score,
 			you : this.you,
 			type : this.type,
-			ready : this.ready
-
+			ready : this.ready,
+			cards: myCards,
+			selectedCards: mySelectedCards
 		}
 	}
 

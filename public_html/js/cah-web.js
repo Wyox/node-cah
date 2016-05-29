@@ -2,6 +2,7 @@ var socket = {};
 var GameInfo;
 var PlayerIsReady = false
 var localState;
+var selectCount = 0
 
 $(document).ready(function(){
 	socket = io(location.hostname + ":8080");
@@ -47,23 +48,55 @@ function HandleGameInfoUpdate(GameInf){
 	var ready = 0;
 	GameInfo = GameInf;
 
+	console.log(GameInfo);
 
 	// Initial call to a new state
 	if(localState != GameInfo.state){
 		switch(GameInfo.state){
 			case "waiting-for-players":
 				// Load waiting for players screen
-				$(".cah-game").html('').append($(".waiting-for-players-template"));
+				$(".cah-game").html('').append($(".waiting-for-players-template").clone());
 				Binder();
+				console.log("restart");
 			break;
 			case "start-game":
 
 				// Start game
-				$(".cah-game").html('').append($(".game-field-template"));
+				$(".cah-game").html('').append($(".game-field-template").clone());
 				Binder();
 				console.log("Start game");
+			break;
+			case "player-pick":
+				selectCount = 0;
+				$(".cah-game").html('').append($(".game-field-template").clone());
+
+
+
+				// Toon zwarte kaart
+				var myBlackCard = $(".templates .black-card-template").clone().removeClass("black-card-template");
+
+				myBlackCard.find(".card-text").html(GameInf.blackcard.text).removeClass("black-card-template");
+
+
+				// Toon alle kaarten
+				var mySelf = GetMe();
+
+				$(".cah-game .play-area .black-card-spot").append(myBlackCard);
+
+
+				for (i in mySelf.cards) {
+					var card = mySelf.cards[i];
+					var myWhiteCard = $(".templates .white-card-template").clone();
+					myWhiteCard.removeClass("white-card-template");
+					myWhiteCard.find(".card-text").html(card.text);
+					myWhiteCard.find(".white-card").attr("data-card-id", card.id);
+
+					$(".cah-game .player-cards").append(myWhiteCard);
+				}
+
+				Binder();
 			break;		
-		}	
+		}
 	}	
 
 	// Update player count if we can.
@@ -89,6 +122,24 @@ function HandleGameInfoUpdate(GameInf){
 			$(".cah-status").html("Preparing round...");
 		break;
 		case "player-pick":
+			$(".cah-status").html("Players picking cards");
+
+			// Check if other players already placed cards, if so. Show them as EMPTY cards on the screen
+			$('.cah-game .other-player-selected-cards').html('');
+
+			console.log("!!!!!");
+			for (i in GameInf.players) {
+				var ply = GameInf.players[i];
+				if(ply.you === false){
+					for(k in ply.selectedCards){
+						var myWhiteCard = $(".templates .white-card-template").clone();
+						$('.cah-game .other-player-selected-cards').append(myWhiteCard);
+					}					
+				}
+
+			}
+
+
 			if(GetMe().type == "card-czar"){
 				// Card-czar cannot pick a card, there for his cards are disabled for a bit.
 				$(".cah-game .player-cards").addClass("disabled");
@@ -110,7 +161,6 @@ function HandleGameInfoUpdate(GameInf){
 
 function GetMe(){
 	var rc;
-	console.log(GameInfo);
 	for (i in GameInfo.players) {
 		var ply = GameInfo.players[i];
 		if(ply.you === true){
@@ -119,7 +169,7 @@ function GetMe(){
 		}
 	}
 
-	return;
+	return rc;
 }
 
 
@@ -136,10 +186,6 @@ function SetReadyState(state){
 		$(".ready-negate").html("not");
 	}
 	socket.emit("SetReadyState",state);
-}
-
-function GetReadyState(){
-
 }
 
 
@@ -175,6 +221,41 @@ function Binder(){
 		}else{
 			SetPlayerName(nickname);
 			localStorage.setItem('nickname',nickname);
+		}
+	});
+
+	$('.player-cards .white-card').on('click',function(){
+		if(selectCount <  GameInfo.blackcard.numanswers){
+			// If it's the card-czar, just ignore it
+			if(GetMe().type != "card-czar"){
+				$(".white-card").removeClass("selected");
+				$(this).addClass("selected");
+				$(this).addClass("selected");
+				$(".select-card input").attr("disabled",false);
+
+			}
+		}
+	});
+
+	$(".select-card input[type='button']").on('click',function(){
+		if($(".player-cards .white-card.selected").length > 0){
+			selectCount = selectCount + 1;
+
+			// We answered everything. block it
+
+			if(selectCount >=  GameInfo.blackcard.numanswers){
+				// We have enough answers, disable Select button
+				$(this).attr("disabled","disabled");
+			}
+
+			// Card selected, make it definite
+			socket.emit("SetCard",$(".white-card.selected").attr("data-card-id"));
+
+			// Remove it from the stack visually
+			var item = $(".white-card.selected").removeClass("selected");
+			item = item.parent();
+			$(".cah-game .play-area .player-selected-cards").append(item);
+
 		}
 	})
 
