@@ -77,7 +77,23 @@ exports.init = function(ioo){
 			var currentPlayer = findPlayerBySessionId(socket.id);
 
 			currentPlayer.addSelectedCard(myCardSet.getCardById(card));
-			
+
+			var countCards = 0;
+			var countPlayers = 0;
+			// Check if all players picked a card (except the card czar). If so go to the card czar pick
+			for( pli in myGameInfo.players ){
+				if(myGameInfo.players[pli].ready === true && myGameInfo.players[pli].isCardCzar() === false){
+					countPlayers = countPlayers + 1;
+					countCards = countCards + myGameInfo.players[pli].selectedCards.length;
+				}
+			}
+
+			if(countCards >= (countPlayers * myGameInfo.getBlackCard().numanswers)){
+				console.log("Game: All players picked white cards. Go to czar pick")
+				GameCardCzarPick();
+			}
+
+
 			SyncGameInfo();
 
 		})
@@ -131,6 +147,11 @@ function GameStart(){
 
 function GamePlayerPick(){
 	myGameInfo.SetPlayerPick();
+	SyncGameInfo();
+}
+
+function GameCardCzarPick(){
+	myGameInfo.SetCzarPick();
 	SyncGameInfo();
 }
 
