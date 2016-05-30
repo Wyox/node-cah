@@ -48,8 +48,6 @@ function HandleGameInfoUpdate(GameInf){
 	var ready = 0;
 	GameInfo = GameInf;
 
-	console.log(GameInfo);
-
 	// Initial call to a new state
 	if(localState != GameInfo.state){
 		switch(GameInfo.state){
@@ -95,7 +93,29 @@ function HandleGameInfoUpdate(GameInf){
 				}
 
 				Binder();
-			break;		
+			break;	
+			case "czar-pick":
+				$('.cah-game .player-selected-cards').html('');
+				$('.cah-game .other-player-selected-cards').html('');
+				for (i in GameInf.players) {
+					var ply = GameInf.players[i];
+					if(ply.you === false){
+						for(k in ply.selectedCards){
+							var myWhiteCard = $(".templates .white-card-template").clone();
+							myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
+							$('.cah-game .other-player-selected-cards').append(myWhiteCard);
+						}			
+					}else{
+						for(k in ply.selectedCards){
+							var myWhiteCard = $(".templates .white-card-template").clone();
+							myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
+							$('.cah-game .player-selected-cards').append(myWhiteCard);
+						}
+					}
+
+				}
+
+			break;	
 		}
 	}	
 
@@ -127,7 +147,6 @@ function HandleGameInfoUpdate(GameInf){
 			// Check if other players already placed cards, if so. Show them as EMPTY cards on the screen
 			$('.cah-game .other-player-selected-cards').html('');
 
-			console.log("!!!!!");
 			for (i in GameInf.players) {
 				var ply = GameInf.players[i];
 				if(ply.you === false){
