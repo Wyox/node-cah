@@ -102,6 +102,7 @@ var Player = function(sessionId, playerName){
 		// Maybe cards should be put private if they are not yours
 
 		return {
+			sessionId : this.sessionId,
 			playerName : this.playerName,
 			score : this.score,
 			you : this.you,

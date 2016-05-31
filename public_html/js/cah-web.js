@@ -98,22 +98,32 @@ function HandleGameInfoUpdate(GameInf){
 				$('.cah-game .player-selected-cards').html('');
 				$('.cah-game .other-player-selected-cards').html('');
 				for (i in GameInf.players) {
+					
+					var mySet = $(".templates .player-card-set-template").clone();
+					mySet.removeClass('player-card-set-template')
+					mySet.attr("data-player-id", GameInf.players);
 					var ply = GameInf.players[i];
+
 					if(ply.you === false){
 						for(k in ply.selectedCards){
 							var myWhiteCard = $(".templates .white-card-template").clone();
 							myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
-							$('.cah-game .other-player-selected-cards').append(myWhiteCard);
-						}			
+							mySet.append(myWhiteCard);
+						}	
+						console.log(mySet);
+
+						$('.cah-game .other-player-selected-cards').append(mySet);		
 					}else{
 						for(k in ply.selectedCards){
 							var myWhiteCard = $(".templates .white-card-template").clone();
 							myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
-							$('.cah-game .player-selected-cards').append(myWhiteCard);
+							mySet.append(myWhiteCard);
 						}
+						$('.cah-game .player-selected-cards').append(mySet);
 					}
 
 				}
+				Binder()
 
 			break;	
 		}
@@ -166,6 +176,13 @@ function HandleGameInfoUpdate(GameInf){
 				// Select card
 				$(".cah-game .player-cards").addClass("active");
 			}
+		break;
+		case "czar-pick":
+			$(".cah-status").html("Czar picking cards");
+			if(GetMe().type == "card-czar"){
+				$(".czar-button").removeClass("hidden").attr("disabled",false);
+			}
+			
 		break;
 	}
 
@@ -249,7 +266,6 @@ function Binder(){
 			if(GetMe().type != "card-czar"){
 				$(".white-card").removeClass("selected");
 				$(this).addClass("selected");
-				$(this).addClass("selected");
 				$(".select-card input").attr("disabled",false);
 
 			}
@@ -275,6 +291,18 @@ function Binder(){
 			item = item.parent();
 			$(".cah-game .play-area .player-selected-cards").append(item);
 
+		}
+	});
+
+	$('.player-card-set .white-card').on('click',function(){
+		// Check if you are a czar and in the czar phase
+		console.log("YES?");
+		if(GameInfo.state == "czar-pick" && GetMe().type == "card-czar"){
+			$(".player-card-set").removeClass("selected");
+			$(".player-card-set .white-card").removeClass("selected");
+			
+			$(this).closest('.player-card-set').addClass("selected");
+			$(this).closest('.player-card-set').find(".white-card").addClass("selected");
 		}
 	})
 
