@@ -43,6 +43,102 @@ $(document).ready(function(){
 })
 
 
+function ClearField(){
+	$(".cah-game").html('');
+}
+
+function ShowWaitingForPlayers(){
+	// Load waiting for players screen
+	$(".cah-game").append($(".waiting-for-players-template").clone());
+}
+
+function ShowGameField(){
+	$(".cah-game").append($(".game-field-template").clone());
+}
+
+function ShowBlackCard(){
+	// Toon zwarte kaart
+	var myBlackCard = $(".templates .black-card-template").clone().removeClass("black-card-template");
+
+	myBlackCard.find(".card-text").html(GameInfo.blackcard.text).removeClass("black-card-template");
+
+	$(".cah-game .play-area .black-card-spot").append(myBlackCard);
+}
+
+function ShowPlayerCards(){
+	
+	// Toon alle kaarten 
+	var mySelf = GetMe();
+
+	for (i in mySelf.cards) {
+		var card = mySelf.cards[i];
+		var myWhiteCard = $(".templates .white-card-template").clone();
+		myWhiteCard.removeClass("white-card-template");
+		myWhiteCard.find(".card-text").html(card.text);
+		myWhiteCard.find(".white-card").attr("data-card-id", card.id);
+
+		$(".cah-game .player-cards").append(myWhiteCard);
+	}
+
+}
+
+function clearSelectedField(){
+	$('.cah-game .player-selected-cards').html('');
+	$('.cah-game .other-player-selected-cards').html('');
+}
+
+function showAllSelectedCards(){
+	for (i in GameInfo.players) {
+		
+		var mySet = $(".templates .player-card-set-template").clone();
+		mySet.removeClass('player-card-set-template')
+		mySet.attr("data-player-id", GameInfo.players[i].sessionId);
+		var ply = GameInfo.players[i];
+
+		if(ply.you === false){
+			for(k in ply.selectedCards){
+				var myWhiteCard = $(".templates .white-card-template").clone();
+				myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
+				mySet.append(myWhiteCard);
+			}	
+			console.log(mySet);
+
+			$('.cah-game .other-player-selected-cards').append(mySet);		
+		}else{
+			for(k in ply.selectedCards){
+				var myWhiteCard = $(".templates .white-card-template").clone();
+				myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
+				mySet.append(myWhiteCard);
+			}
+			$('.cah-game .player-selected-cards').append(mySet);
+		}
+
+	}
+}
+
+function ShowWinner(){
+	$(".cah-game").append($(".winner-screen-template").clone());
+
+	// Find the winner
+	for(i in GameInfo.players){
+		var ply = GameInfo.players[i];
+		if(ply.won == true){
+			$(".cah-game .winner-screen .winner-name").html(ply.playerName);
+		}
+	}
+
+
+	// Show scores of all players
+	for(i in GameInfo.players){
+		var ply = GameInfo.players[i];
+		var Tr = $("<tr></tr>");
+		Tr.append($("<td>"+ ply.playerName+"</td>"))
+		Tr.append($("<td>"+ ply.score+"</td>"))
+		$(".cah-game .scoreboard").append(Tr);
+	}
+
+	console.log(GameInfo);
+}
 
 function HandleGameInfoUpdate(GameInf){
 	var ready = 0;
@@ -50,85 +146,70 @@ function HandleGameInfoUpdate(GameInf){
 
 	// Initial call to a new state
 	if(localState != GameInfo.state){
+
+		console.log(GameInfo.state);
+
 		switch(GameInfo.state){
 			case "waiting-for-players":
 				PlayerIsReady = false;
 				SetReadyState(PlayerIsReady);
-				// Load waiting for players screen
-				$(".cah-game").html('').append($(".waiting-for-players-template").clone());
+
+				// Clear game
+				ClearField();
+				// Show waiting for players screen
+				ShowWaitingForPlayers();
+
+				//Rebind everything
 				Binder();
-				console.log("restart");
 			break;
 			case "start-game":
 
-				// Start game
-				$(".cah-game").html('').append($(".game-field-template").clone());
+				//Clear game
+				ClearField();
+				// Show Gamefield now
+				ShowGameField();
+
+				//Rebind everything
 				Binder();
-				console.log("Start game");
 			break;
 			case "player-pick":
 				selectCount = 0;
-				$(".cah-game").html('').append($(".game-field-template").clone());
 
-				// Toon zwarte kaart
-				var myBlackCard = $(".templates .black-card-template").clone().removeClass("black-card-template");
+				//Clear game
+				ClearField();
+				// Show Gamefield again
+				ShowGameField();
 
-				myBlackCard.find(".card-text").html(GameInf.blackcard.text).removeClass("black-card-template");
+				ShowBlackCard();
 
-
-				// Toon alle kaarten
-				var mySelf = GetMe();
-
-				$(".cah-game .play-area .black-card-spot").append(myBlackCard);
-
-
-				for (i in mySelf.cards) {
-					var card = mySelf.cards[i];
-					var myWhiteCard = $(".templates .white-card-template").clone();
-					myWhiteCard.removeClass("white-card-template");
-					myWhiteCard.find(".card-text").html(card.text);
-					myWhiteCard.find(".white-card").attr("data-card-id", card.id);
-
-					$(".cah-game .player-cards").append(myWhiteCard);
-				}
+				ShowPlayerCards();
 
 				Binder();
 			break;	
 			case "czar-pick":
-				$('.cah-game .player-selected-cards').html('');
-				$('.cah-game .other-player-selected-cards').html('');
-				for (i in GameInf.players) {
-					
-					var mySet = $(".templates .player-card-set-template").clone();
-					mySet.removeClass('player-card-set-template')
-					mySet.attr("data-player-id", GameInf.players[i].sessionId);
-					var ply = GameInf.players[i];
 
-					if(ply.you === false){
-						for(k in ply.selectedCards){
-							var myWhiteCard = $(".templates .white-card-template").clone();
-							myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
-							mySet.append(myWhiteCard);
-						}	
-						console.log(mySet);
+				//Clear game
+				ClearField();
+				// Show Gamefield again
+				ShowGameField();
 
-						$('.cah-game .other-player-selected-cards').append(mySet);		
-					}else{
-						for(k in ply.selectedCards){
-							var myWhiteCard = $(".templates .white-card-template").clone();
-							myWhiteCard.find(".card-text").html(ply.selectedCards[k].text);
-							mySet.append(myWhiteCard);
-						}
-						$('.cah-game .player-selected-cards').append(mySet);
-					}
+				ShowBlackCard();
 
-				}
+				ShowPlayerCards();
+
+				clearSelectedField();
+
+				showAllSelectedCards();
+
 				Binder()
 
 			break;
 			case "round-end":
-				console.log("AFGELOPEN!")
-				console.log(GameInfo);
+				//Clear game
+				ClearField();
+
+				ShowWinner();
+
 			break;
 		}
 	}	
@@ -158,6 +239,13 @@ function HandleGameInfoUpdate(GameInf){
 		case "player-pick":
 			$(".cah-status").html("Players picking cards");
 
+			if(GetMe().type != "card-czar"){
+				// If czar-button doesn't have hidden. Add hidden
+				if($(".czar-button").hasClass('hidden') == false){
+					$(".czar-button").addClass("hidden").attr("disabled",false);	
+				}
+			}
+
 			// Check if other players already placed cards, if so. Show them as EMPTY cards on the screen
 			$('.cah-game .other-player-selected-cards').html('');
 
@@ -183,10 +271,20 @@ function HandleGameInfoUpdate(GameInf){
 		break;
 		case "czar-pick":
 			$(".cah-status").html("Czar picking cards");
+
 			if(GetMe().type == "card-czar"){
-				$(".czar-button").removeClass("hidden").attr("disabled","asdsad");
+				$(".czar-button").removeClass("hidden").attr("disabled","disabled");
+			}else{
+				// If czar-button doesn't have hidden. Add hidden
+				if($(".czar-button").hasClass('hidden') == false){
+					$(".czar-button").addClass("hidden").attr("disabled",false);	
+				}
 			}
-			
+		break;
+		case "round-end":
+			// Show overlay with winner on it
+
+			// Show a next round starting in X seconds
 		break;
 	}
 
