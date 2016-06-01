@@ -50,6 +50,7 @@ function ClearField(){
 function ShowWaitingForPlayers(){
 	// Load waiting for players screen
 	$(".cah-game").append($(".waiting-for-players-template").clone());
+
 }
 
 function ShowGameField(){
@@ -131,10 +132,12 @@ function ShowWinner(){
 	// Show scores of all players
 	for(i in GameInfo.players){
 		var ply = GameInfo.players[i];
-		var Tr = $("<tr></tr>");
-		Tr.append($("<td>"+ ply.playerName+"</td>"))
-		Tr.append($("<td>"+ ply.score+"</td>"))
-		$(".cah-game .scoreboard").append(Tr);
+						
+
+		var Tr = $("<div></div>");
+		Tr.append($("<div class=\"col-md-6 col-xs-6\">"+ ply.playerName+"</div>"));
+		Tr.append($("<div class=\"col-md-6 col-xs-6\">"+ ply.score+"</div>"));
+		$(".cah-game .scoreb-content").append(Tr);
 	}
 
 	console.log(GameInfo);

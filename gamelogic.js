@@ -143,6 +143,38 @@ exports.init = function(ioo){
 				winningPlayer.setWon(true);
 			}
 
+			// Remove player cards that has been played
+			for( pli in myGameInfo.players ){
+				var myPlayer = myGameInfo.players[pli];
+				var mySelectedCards = myPlayer.getSelectedCards();
+
+				var myNewCards = [];
+				var myCards = myPlayer.getCards();
+
+				for(cii in myCards){
+					var curCard = myCards[cii];
+
+					var canAdd = true;
+					for(ci in mySelectedCards){
+						var mySelectedCard = mySelectedCards[ci];
+
+						if(mySelectedCard.id == curCard.id){
+							var canAdd = false;
+							break;
+						}	
+					}
+
+					if(canAdd == true){
+						myNewCards.push(curCard);
+					}
+				}
+
+				myPlayer.cards = myNewCards;
+
+			}
+
+
+
 			myGameInfo.SetRoundEnd();
 			SyncGameInfo();
 			setTimeout(GameStart,5500);

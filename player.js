@@ -28,6 +28,9 @@ var Player = function(sessionId, playerName){
 		return this.won;
 	}
 
+	this.getCards = function (){
+		return this.cards;
+	}
 
 	this.setPlayerName = function(name){
 		this.playerName = name;
