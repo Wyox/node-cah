@@ -98,6 +98,23 @@ exports.init = function(ioo){
 
 		})
 
+		socket.on('SetWinnerRound',function(sessionId){
+			// Find the player with this session id and add a point to his score.
+			var winningPlayer = findPlayerBySessionId(sessionId);
+
+			// Check if it's not empty and NOT triggered multiple times.
+			if(winningPlayer != null && winningPlayer.getWon() == false){
+				// Add a point to the player
+				winningPlayer.addPoint();
+				winningPlayer.setWon(true);
+			}
+
+			myGameInfo.SetRoundEnd();
+			SyncGameInfo();
+			setTimeout(GameStart,10000);
+		}); 
+
+
 		//Initial call, sync the current game info to that player
 		SyncGameInfo();
 

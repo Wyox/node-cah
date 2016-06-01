@@ -8,6 +8,7 @@ var Player = function(sessionId, playerName){
 	this.ready = false;
 	this.cards = [];
 	this.selectedCards = [];
+	this.won = false;
 
 
 	// Type can be one of the following
@@ -19,6 +20,14 @@ var Player = function(sessionId, playerName){
 
 
 	// Functions
+
+	this.setWon = function(won){
+		this.won = won;
+	}
+	this.getWon = function(){
+		return this.won;
+	}
+
 
 	this.setPlayerName = function(name){
 		this.playerName = name;
@@ -108,6 +117,7 @@ var Player = function(sessionId, playerName){
 			you : this.you,
 			type : this.type,
 			ready : this.ready,
+			won : this.won,
 			cards: myCards,
 			selectedCards: mySelectedCards
 		}

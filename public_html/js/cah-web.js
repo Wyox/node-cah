@@ -52,6 +52,8 @@ function HandleGameInfoUpdate(GameInf){
 	if(localState != GameInfo.state){
 		switch(GameInfo.state){
 			case "waiting-for-players":
+				PlayerIsReady = false;
+				SetReadyState(PlayerIsReady);
 				// Load waiting for players screen
 				$(".cah-game").html('').append($(".waiting-for-players-template").clone());
 				Binder();
@@ -67,8 +69,6 @@ function HandleGameInfoUpdate(GameInf){
 			case "player-pick":
 				selectCount = 0;
 				$(".cah-game").html('').append($(".game-field-template").clone());
-
-
 
 				// Toon zwarte kaart
 				var myBlackCard = $(".templates .black-card-template").clone().removeClass("black-card-template");
@@ -101,7 +101,7 @@ function HandleGameInfoUpdate(GameInf){
 					
 					var mySet = $(".templates .player-card-set-template").clone();
 					mySet.removeClass('player-card-set-template')
-					mySet.attr("data-player-id", GameInf.players);
+					mySet.attr("data-player-id", GameInf.players[i].sessionId);
 					var ply = GameInf.players[i];
 
 					if(ply.you === false){
@@ -125,7 +125,11 @@ function HandleGameInfoUpdate(GameInf){
 				}
 				Binder()
 
-			break;	
+			break;
+			case "round-end":
+				console.log("AFGELOPEN!")
+				console.log(GameInfo);
+			break;
 		}
 	}	
 
@@ -180,7 +184,7 @@ function HandleGameInfoUpdate(GameInf){
 		case "czar-pick":
 			$(".cah-status").html("Czar picking cards");
 			if(GetMe().type == "card-czar"){
-				$(".czar-button").removeClass("hidden").attr("disabled",false);
+				$(".czar-button").removeClass("hidden").attr("disabled","asdsad");
 			}
 			
 		break;
@@ -247,7 +251,7 @@ function isConnected(){
 
 // This function allows us to rebind anything again if new HTML has been shown.
 function Binder(){
-	$('.button-save-nickname').on('click',function(){
+	$('.cah-game .button-save-nickname').on('click',function(){
 		$(".nickname-error").html("");
 
 		var nickname = $('input[name="nickname"]').val();
@@ -260,7 +264,7 @@ function Binder(){
 		}
 	});
 
-	$('.player-cards .white-card').on('click',function(){
+	$('.cah-game .player-cards .white-card').on('click',function(){
 		if(selectCount <  GameInfo.blackcard.numanswers){
 			// If it's the card-czar, just ignore it
 			if(GetMe().type != "card-czar"){
@@ -272,7 +276,7 @@ function Binder(){
 		}
 	});
 
-	$(".select-card input[type='button']").on('click',function(){
+	$(".cah-game .select-card input[type='button']").on('click',function(){
 		if($(".player-cards .white-card.selected").length > 0){
 			selectCount = selectCount + 1;
 
@@ -294,19 +298,28 @@ function Binder(){
 		}
 	});
 
-	$('.player-card-set .white-card').on('click',function(){
+	$('.cah-game .player-card-set .white-card').on('click',function(){
 		// Check if you are a czar and in the czar phase
-		console.log("YES?");
+		
 		if(GameInfo.state == "czar-pick" && GetMe().type == "card-czar"){
+		
 			$(".player-card-set").removeClass("selected");
 			$(".player-card-set .white-card").removeClass("selected");
 			
 			$(this).closest('.player-card-set').addClass("selected");
 			$(this).closest('.player-card-set').find(".white-card").addClass("selected");
+			$(".czar-button").removeClass("hidden").attr("disabled",false);
 		}
 	})
 
-	$(".button-ready").on("click",function(){
+	$(".cah-game .czar-button").on("click",function(){
+		// Find the cards that were selected
+		var PlayerWhoWon = $('.player-card-set.selected').attr("data-player-id");
+		socket.emit("SetWinnerRound",PlayerWhoWon);
+		$(".czar-button").attr("disabled","disabled");
+	})
+
+	$(".cah-game .button-ready").on("click",function(){
 		SetReadyState(!PlayerIsReady);
 		PlayerIsReady = !PlayerIsReady;
 	})
