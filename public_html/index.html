@@ -9,7 +9,23 @@
     <link href="/css/cah-web.css" rel="stylesheet">
 </head>
 <body>
+
 	<div class="templates hidden">
+		<div class="container winner-screen-template winner-screen">
+			<div class="col-md-12">
+				<h1>Winner: <span class="winner-name"></span>!</h1>
+				<h2>Scoreboard</h2>
+				<div class="scoreboard">
+					<div class="col-md-12">
+						<div class="scoreb-header">
+							<div class="col-md-6 col-xs-6">Name</div>
+							<div class="col-md-6 col-xs-6">Score</div>
+						</div>
+						<div class="scoreb-content"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="black-card-template col-md-2 col-xs-6">
 			<div class="black-card card">
 				<div class="card-text">
@@ -86,11 +102,16 @@
 			<div class="row play-area">
 				<div class="black-card-spot">
 				</div>
+
 				<div class="player-selected-cards">
 				</div>
 				<div class="other-player-selected-cards">
 				</div>
-				<input type="button" class="btn btn-success col-md-12 hidden czar-button" value="Select card(s)" disabled="disabled" />
+			</div>
+			<div class="row czar-button-cl">
+				<div class="col-md-12">
+					<input type="button" class="btn btn-success col-md-12 hidden czar-button" value="Select card(s)" disabled="disabled" />
+				</div>
 			</div>
 			<div class="row player-cards ">
 				<div class="col-md-12">
@@ -101,6 +122,8 @@
 			</div>
 		</div>	
 	</div>
+
+
 
 	<div class="container home-screen">
 	</div>
