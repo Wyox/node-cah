@@ -250,9 +250,9 @@ function Binder(){
 	$('.button-save-nickname').on('click',function(){
 		$(".nickname-error").html("");
 
-		var nickname = $('input[name="nickname"]').val();
+		var nickname = $('.cah-game input[name="nickname"]').val();
 
-		if(nickname.length < 4){
+		if(nickname.length < 3){
 			$(".nickname-error").html("Pick a longer nickname");
 		}else{
 			SetPlayerName(nickname);
