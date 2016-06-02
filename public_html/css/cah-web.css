@@ -27,6 +27,15 @@ body{
 	font-size:12pt;
 }
 
+.statusbar{
+	padding: 5px;
+}
+
+.play-area{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
 .white-card{
 	background: white;
 	color:black;

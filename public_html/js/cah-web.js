@@ -139,8 +139,19 @@ function ShowWinner(){
 		Tr.append($("<div class=\"col-md-6 col-xs-6\">"+ ply.score+"</div>"));
 		$(".cah-game .scoreb-content").append(Tr);
 	}
+}
 
+function ShowWinningCards(){
 	console.log(GameInfo);
+	$(".cah-game .winning-cards")
+
+	var myBlackCard = $(".templates .black-card-template").clone().removeClass("black-card-template");
+
+	myBlackCard.find(".card-text").html(GameInfo.blackcard.text).removeClass("black-card-template");
+	$(".cah-game .winning-cards").append(myBlackCard);
+
+
+	
 }
 
 function HandleGameInfoUpdate(GameInf){
@@ -212,6 +223,8 @@ function HandleGameInfoUpdate(GameInf){
 				ClearField();
 
 				ShowWinner();
+
+				ShowWinningCards();
 
 			break;
 		}
