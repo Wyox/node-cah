@@ -8,6 +8,7 @@ var Player = function(sessionId, playerName){
 	this.ready = false;
 	this.cards = [];
 	this.selectedCards = [];
+	this.won = false;
 
 
 	// Type can be one of the following
@@ -19,6 +20,17 @@ var Player = function(sessionId, playerName){
 
 
 	// Functions
+
+	this.setWon = function(won){
+		this.won = won;
+	}
+	this.getWon = function(){
+		return this.won;
+	}
+
+	this.getCards = function (){
+		return this.cards;
+	}
 
 	this.setPlayerName = function(name){
 		this.playerName = name;
@@ -102,11 +114,13 @@ var Player = function(sessionId, playerName){
 		// Maybe cards should be put private if they are not yours
 
 		return {
+			sessionId : this.sessionId,
 			playerName : this.playerName,
 			score : this.score,
 			you : this.you,
 			type : this.type,
 			ready : this.ready,
+			won : this.won,
 			cards: myCards,
 			selectedCards: mySelectedCards
 		}

@@ -9,7 +9,26 @@
     <link href="/css/cah-web.css" rel="stylesheet">
 </head>
 <body>
+
 	<div class="templates hidden">
+		<div class="container winner-screen-template winner-screen">
+			<div class="col-md-12">
+				<h1>Winner: <span class="winner-name"></span>!</h1>
+				<h2>Scoreboard</h2>
+				<div class="scoreboard">
+					<div class="col-md-12">
+						<div class="scoreb-header">
+							<div class="col-md-6 col-xs-6"><strong>Name</strong></div>
+							<div class="col-md-6 col-xs-6"><strong>Score</strong></div>
+						</div>
+						<div class="scoreb-content"></div>
+					</div>
+				</div>
+				<div class="winning-cards">
+
+				</div>
+			</div>
+		</div>
 		<div class="black-card-template col-md-2 col-xs-6">
 			<div class="black-card card">
 				<div class="card-text">
@@ -19,9 +38,11 @@
 		<div class="white-card-template col-md-2 col-xs-6">
 			<div class="white-card card">
 				<div class="card-text">
-					
 				</div>
 			</div>
+		</div>
+		<div class="player-card-set player-card-set-template">
+
 		</div>
 		<div class="container waiting-for-players-template">
 			<div class="col-md-6">
@@ -76,17 +97,23 @@
 		<div class="container game-field-template">
 			<div class="row statusbar">
 				<div class="col-md-12 ">
-					<div class="welcome-message">Welkom:<span class="cah-username">Username</span></div> 
-					<div class="welcome-message">Status:<span class="cah-status">Preparing round</span></div> 
+					<div class="welcome-message"><strong>Welcome: <span class="cah-username">Username</span></strong></div> 
+					<div class="welcome-message"><strong>Status: <span class="cah-status">Preparing round</span></strong></div> 
 				</div>
 			</div>
 			<!-- Play area -->
 			<div class="row play-area">
 				<div class="black-card-spot">
 				</div>
+
 				<div class="player-selected-cards">
 				</div>
 				<div class="other-player-selected-cards">
+				</div>
+			</div>
+			<div class="row czar-button-cl">
+				<div class="col-md-12">
+					<input type="button" class="btn btn-success col-md-12 hidden czar-button" value="Select card(s)" disabled="disabled" />
 				</div>
 			</div>
 			<div class="row player-cards ">
@@ -98,6 +125,8 @@
 			</div>
 		</div>	
 	</div>
+
+
 
 	<div class="container home-screen">
 	</div>
